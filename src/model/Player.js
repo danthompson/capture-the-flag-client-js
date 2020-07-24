@@ -23,15 +23,16 @@ class Player {
      * Constructs a new <code>Player</code>.
      * Player information
      * @alias module:model/Player
+     * @param name {String} 
      * @param hasPeg {Boolean} 
      * @param hasFlag {Boolean} 
      * @param isInSafeZone {Boolean} 
      * @param x {Number} 
      * @param y {Number} 
      */
-    constructor(hasPeg, hasFlag, isInSafeZone, x, y) { 
+    constructor(name, hasPeg, hasFlag, isInSafeZone, x, y) { 
         
-        Player.initialize(this, hasPeg, hasFlag, isInSafeZone, x, y);
+        Player.initialize(this, name, hasPeg, hasFlag, isInSafeZone, x, y);
     }
 
     /**
@@ -39,7 +40,8 @@ class Player {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, hasPeg, hasFlag, isInSafeZone, x, y) { 
+    static initialize(obj, name, hasPeg, hasFlag, isInSafeZone, x, y) { 
+        obj['name'] = name;
         obj['has_peg'] = hasPeg;
         obj['has_flag'] = hasFlag;
         obj['is_in_safe_zone'] = isInSafeZone;
@@ -58,6 +60,9 @@ class Player {
         if (data) {
             obj = obj || new Player();
 
+            if (data.hasOwnProperty('name')) {
+                obj['name'] = ApiClient.convertToType(data['name'], 'String');
+            }
             if (data.hasOwnProperty('has_peg')) {
                 obj['has_peg'] = ApiClient.convertToType(data['has_peg'], 'Boolean');
             }
@@ -79,6 +84,11 @@ class Player {
 
 
 }
+
+/**
+ * @member {String} name
+ */
+Player.prototype['name'] = undefined;
 
 /**
  * @member {Boolean} has_peg
